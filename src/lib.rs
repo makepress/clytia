@@ -18,7 +18,8 @@ use crossbeam::thread::scope;
 use owo_colors::OwoColorize;
 use termion::{event::Key, input::TermRead, raw::IntoRawMode};
 
-type Result<T, E = Error> = core::result::Result<T, E>;
+/// A alias for [`std::result::Result`] where the default error is [`Error`]
+pub type Result<T, E = Error> = core::result::Result<T, E>;
 
 static SPINNER_SYMBOLS: [char; 8] = ['⠹', '⢸', '⣰', '⣤', '⣆', '⡇', '⠏', '⠛'];
 
@@ -92,6 +93,36 @@ impl<I: Read, O: Write> Clytia<I, O> {
     /// - [`Error::ParseError`] if the given input could not be parsed to type `T`.
     /// - A `T` if the given input could be parsed.
     /// - `default` if set and no input is given.
+    ///
+    /// # Usage
+    /// ## Without default value:
+    /// ```rust
+    /// use clytia::{Clytia, Error, Result};
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let r: Result<usize> = cli.parsed_input("Please enter a number", None);
+    ///
+    /// match r {
+    ///     Ok(r) => println!("Your number is: {}!", r),
+    ///     Err(Error::NonOptionalInput) => println!("You didn't enter a number! 😠"),
+    ///     Err(_) => println!("Uh oh...")
+    /// }
+    /// ```
+    /// ## With default value:
+    /// ```rust
+    /// use clytia::{Clytia, Error, Result};
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let r: Result<usize> = cli.parsed_input("Please enter a number", Some(1));
+    ///
+    /// match r {
+    ///     Ok(r) => println!("Your number is: {}!", r),
+    ///     Err(Error::NonOptionalInput) => unreachable!("You'll get Ok(1) instead."),
+    ///     Err(_) => println!("Uh oh...")
+    /// }
+    /// ```
     pub fn parsed_input<S, T>(&mut self, prompt: S, default: Option<T>) -> Result<T>
     where
         S: std::fmt::Display,
@@ -146,6 +177,19 @@ impl<I: Read, O: Write> Clytia<I, O> {
     ///
     /// # Returns
     /// Returns the result of the given task
+    ///
+    /// # Usage
+    /// ```rust
+    /// use std::time::Duration;
+    /// use clytia::Clytia;
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// cli.static_background_spinner("Waiting for 2 seconds", || -> Result<(), ()> {
+    ///     std::thread::sleep(Duration::from_secs(2));
+    ///     Ok(())
+    /// });
+    /// ```
     pub fn static_background_spinner<S, F, R, E>(
         &mut self,
         text: S,
@@ -202,6 +246,33 @@ impl<I: Read, O: Write> Clytia<I, O> {
     ///
     /// The `task` should return a result, which will be used to change the final output of the
     /// spinner with a ✔️ or ❌, depending on success or failure.
+    ///
+    /// # Usage
+    /// ```rust
+    /// use std::{time::Duration, sync::atomic::{AtomicUsize, Ordering}};
+    /// use clytia::Clytia;
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let counter = AtomicUsize::new(0);
+    /// cli.dynamic_background_spinner(
+    ///     || {
+    ///         let count = counter.load(Ordering::SeqCst);
+    ///         if count >= 2_000 {
+    ///             "Waited for 2secs".to_string()
+    ///         } else {
+    ///             format!("{}ms left", 2_000 - count)
+    ///         }
+    ///     },
+    ///     || -> Result<(), ()> {
+    ///         let mut count = counter.load(Ordering::SeqCst);
+    ///         while count < 2_000 {
+    ///             std::thread::sleep(Duration::from_millis(1));
+    ///             count = counter.fetch_add(1, Ordering::SeqCst);
+    ///         }
+    ///         Ok(())
+    ///     });
+    /// ```
     pub fn dynamic_background_spinner<S, P, F, R, E>(
         &mut self,
         text_func: S,
@@ -257,6 +328,27 @@ impl<I: Read, O: Write> Clytia<I, O> {
     /// Run a background task and display a progess bar with a percentage.
     ///
     /// The `progress_func` parameter should return a number between `0` and `100`.
+    ///
+    /// # Usage
+    /// ```rust
+    /// use std::{time::Duration, sync::atomic::{AtomicUsize, Ordering}};
+    /// use clytia::Clytia;
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let counter = AtomicUsize::new(0);
+    /// cli.progress_bar(
+    ///     "Wait 2secs",
+    ///     || { counter.load(Ordering::SeqCst) / 20 },
+    ///     || -> Result<(), ()> {
+    ///         let mut count = counter.load(Ordering::SeqCst);
+    ///         while count < 2_000 {
+    ///             std::thread::sleep(Duration::from_millis(1));
+    ///             count = counter.fetch_add(1, Ordering::SeqCst);
+    ///         }
+    ///         Ok(())
+    ///     });
+    /// ```
     pub fn progress_bar<S, P, F, R, E>(
         &mut self,
         prompt: S,
@@ -387,6 +479,18 @@ impl<I: Read, O: Write> Clytia<I, O> {
     }
 
     /// Present several options to the user for them to pick from.
+    /// They can use the up and down arrow keys to highlight the option,
+    /// and enter to select it.
+    ///
+    /// # Usage
+    /// ```rust
+    /// use clytia::Clytia;
+    ///
+    /// let mut cli = Clytia::default();
+    /// let selection = cli.options_menu(vec!["cats", "dogs", "both"]).unwrap();
+    ///
+    /// println!("You selected: {}", selection);
+    /// ```
     pub fn options_menu<S, T>(&mut self, options: S) -> Result<T>
     where
         S: AsRef<[T]>,
@@ -460,7 +564,19 @@ impl<I: Read, O: Write> Clytia<I, O> {
     }
 
     /// Presents multiple options to the user for them to select,
-    /// they can pick multiple.
+    /// they can pick multiple. Up and Down arrow keys to change highlighted
+    /// option, space to modify selection, enter to confirm choices.
+    ///
+    /// # Usage
+    /// ```rust
+    /// use clytia::Clytia;
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let choices = cli.multichoice(vec!["cats", "dogs", "rabbits"]).unwrap();
+    ///
+    /// println!("You selected: {:?}", choices);
+    /// ```
     pub fn multichoice<S, T>(&mut self, options: S) -> Result<Vec<T>>
     where
         S: AsRef<[T]>,
