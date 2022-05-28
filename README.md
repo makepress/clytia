@@ -1,7 +1,7 @@
 # Clytia &emsp; [![Build Status]][circleci] [![Latest Version]][crates.io]
 
 [Build Status]: https://img.shields.io/circleci/build/github/makepress/clytia
-[Latest Version]: https://img.shields.io/crates/v/serde.svg
+[Latest Version]: https://img.shields.io/crates/v/clytia.svg
 [crates.io]: https://crates.io/crates/clytia
 [circleci]: https://app.circleci.com/pipelines/github/makepress/clytia
 
