@@ -17,9 +17,6 @@ workflows:
     jobs:
       - build-and-publish-tagged:
           context: [aws, crates.io]
-          requires:
-            - check
-            - test
           filters:
             branches:
               ignore: /.*/
