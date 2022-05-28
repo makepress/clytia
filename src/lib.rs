@@ -882,7 +882,7 @@ mod tests {
             let input = std::io::stdin();
 
             let mut cli = Clytia::new(input, output);
-            assert!(cli.options_menu(vec!["ayy", "lmao", "kill me"]).is_ok())
+            assert!(cli.options_menu(vec!["cats", "dogs", "both"]).is_ok())
         }
 
         #[test]
@@ -891,7 +891,7 @@ mod tests {
             let input = std::io::stdin();
 
             let mut cli = Clytia::new(input, output);
-            assert!(cli.multichoice(vec!["ayy", "lmao", "kill me"]).is_ok())
+            assert!(cli.multichoice(vec!["cats", "dogs", "rabbits"]).is_ok())
         }
     }
 }
