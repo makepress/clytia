@@ -1,6 +1,6 @@
 [package]
 name = "clytia"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "A crate to make writing CLIs a bit nicer, a set of functions for common components"

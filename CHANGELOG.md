@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/makepress/clytia/compare/v0.1.1...v0.1.2) (2022-05-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rust to v1.61.0 ([a9e5ede](https://www.github.com/makepress/clytia/commit/a9e5ede8f8b9a7e9f9871d97d6eb6d9a7ed1ad9c))
+
 ### [0.1.1](https://www.github.com/makepress/clytia/compare/v0.1.0...v0.1.1) (2022-05-28)
 
 
