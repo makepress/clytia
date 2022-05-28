@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/makepress/clytia/compare/v0.1.0...v0.1.1) (2022-05-28)
+
+
+### Bug Fixes
+
+* **ci:** Remove deps from publish job on release ([34259e7](https://www.github.com/makepress/clytia/commit/34259e7b7cba741b6a6f38f42402030c3a125258))
+* **docs:** Add doctests/usage examples ([9c30ee3](https://www.github.com/makepress/clytia/commit/9c30ee3f20113bd3cead66f4cdf8eb46b4ace634))
+* **docs:** Add info to crate docstring ([af17b21](https://www.github.com/makepress/clytia/commit/af17b21b5d1609dc108edf44e25c5e2ff8b7e4f3))
+
 ## 0.1.0 (2022-05-28)
 
 
