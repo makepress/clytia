@@ -15,25 +15,16 @@ workflows:
               only: main
   release:
     jobs:
-      - check:
-          context: [aws]
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-      - test:
-          context: [aws]
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - build-and-publish-tagged:
           context: [aws, crates.io]
           requires:
             - check
             - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
 jobs:
   check:
     executor: makepress-orb/rust
