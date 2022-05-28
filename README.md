@@ -8,6 +8,8 @@
 Clytia is a *WIP* crate to make writing your CLIs a little bit easier. It features nice colorful and intuitive
 input methods for your users.
 
+Please look at the [docs][https://docs.rs/clytia] for more information.
+
 ##### License
 
 <sup>
