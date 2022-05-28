@@ -1,0 +1,26 @@
+[package]
+name = "clytia"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "A crate to make writing CLIs a bit nicer, a set of functions for common components"
+documentation = "https://docs.rs/clytia"
+readme = "README.md"
+homepage = "https://github.com/makepress/clytia/"
+repository = "https://github.com/makepress/clytia/"
+keywords = ["cli", "helper", "command-line"]
+categories = ["command-line-interface"]
+
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[dependencies]
+crossbeam = "0.8.1"
+owo-colors = "3.4.0"
+termion = "1.5.6"
+thiserror = "1.0.31"

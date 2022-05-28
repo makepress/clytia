@@ -1,0 +1,61 @@
+version: 2.1
+
+workflows:
+  version: 2
+  branch:
+    jobs:
+      - check:
+          context: [aws]
+      - test:
+          context: [aws]
+      - makepress-orb/release-please-single:
+          context: [lulubot]
+          filters:
+            branches:
+              only: main
+  release:
+    jobs:
+      - check:
+          context: [aws]
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - test:
+          context: [aws]
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - build-and-publish-tagged:
+          context: [aws, crates.io]
+          requires:
+            - check
+            - test
+jobs:
+  check:
+    executor: makepress-orb/rust
+    steps:
+      - checkout
+      - makepress-orb/with-rust:
+          steps:
+            - run: just check
+  test:
+    executor: makepress-orb/rust
+    steps:
+      - checkout
+      - makepress-orb/with-rust:
+          steps:
+            - run: just test
+  build-and-publish-tagged:
+    executor: makepress-orb/rust
+    steps:
+      - checkout
+      - makepress-orb/with-rust:
+          steps:
+            - run: cargo login
+            - run: cargo publish
+orbs:
+  makepress-orb: makepress/makepress-orb@2.3.0
