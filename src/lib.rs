@@ -1,7 +1,10 @@
 //! # Clytia
 //! Clytia is a helper library to make writing CLIs easier and smoother
 //!
-//! # WIP
+//! Clytia provides several functions, which either take in some form of user input
+//! or allow you to provide feedback to the user while some process is ongoing.
+//!
+//! Look at the [`Clytia`] struct for more information.
 
 #![deny(missing_docs)]
 #![cfg_attr(feature = "nightly", feature(scoped_threads))]
