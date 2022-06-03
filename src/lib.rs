@@ -172,6 +172,97 @@ impl<I: Read, O: Write> Clytia<I, O> {
         Ok(ret)
     }
 
+    /// Get input from the user with a custom validation function.
+    /// Takes in a given prompt and a validation function that is used to check the input before returning.
+    ///
+    /// # Usage
+    /// ```rust
+    /// use clytia::{Clytia, Error, Result};
+    ///
+    /// let mut cli = Clytia::default();
+    ///
+    /// let r = usize = cli.validated_input("Please enter a number", "0-10", |n| n >= 0 && n <= 10).unwrap();
+    /// assert!(r >= 0 && r <= 10);
+    /// ```
+    pub fn validated_input<T, S, R, F>(
+        &mut self,
+        prompt: S,
+        requirements: R,
+        validate: F,
+    ) -> Result<T>
+    where
+        S: std::fmt::Display,
+        R: std::fmt::Display,
+        T: FromStr,
+        F: Fn(&T) -> bool,
+    {
+        let input_stream = &mut self.input;
+        let output_stream = &mut self.output;
+
+        loop {
+            write!(
+                output_stream,
+                "{}{}{}",
+                prompt.blue(),
+                format!("(requirements: {})", requirements).magenta(),
+                " => ".blue()
+            )?;
+            output_stream.flush()?;
+
+            let input = input_stream.read_line()?;
+            match input {
+                None => {
+                    write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
+                    write!(
+                        output_stream,
+                        "{}{}{}",
+                        prompt.red(),
+                        format!("(requirements: {})", requirements).magenta(),
+                        " => ".red()
+                    )?;
+                    output_stream.flush()?;
+                    std::thread::sleep(Duration::from_millis(100));
+                    continue;
+                }
+                Some(n) if n.trim().trim_end().is_empty() => {
+                    write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
+                    write!(
+                        output_stream,
+                        "{}{}{}",
+                        prompt.red(),
+                        format!("(requirements: {})", requirements).magenta(),
+                        " => ".red()
+                    )?;
+                    output_stream.flush()?;
+                    std::thread::sleep(Duration::from_millis(100));
+                    continue;
+                }
+                Some(n) => {
+                    let trimmed = n.trim().trim_end();
+                    let parsed = trimmed
+                        .parse()
+                        .map_err(|_| Error::ParseError(trimmed.to_string()))?;
+                    if validate(&parsed) {
+                        Ok::<_, Error>(parsed)
+                    } else {
+                        write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
+                        write!(
+                            output_stream,
+                            "{}{}{}{}",
+                            prompt.red(),
+                            format!("(requirements: {})", requirements).magenta(),
+                            " => ".red(),
+                            n.white()
+                        )?;
+                        output_stream.flush()?;
+                        std::thread::sleep(Duration::from_millis(100));
+                        continue;
+                    }
+                }
+            }?;
+        }
+    }
+
     /// Show a loading animation using braille until a task completes,
     /// The text is static and never changes.
     ///
