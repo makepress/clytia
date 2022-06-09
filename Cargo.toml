@@ -11,11 +11,6 @@ repository = "https://github.com/makepress/clytia/"
 keywords = ["cli", "helper", "command-line"]
 categories = ["command-line-interface"]
 
-include = [
-    "**/*.rs",
-    "Cargo.toml",
-]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 
