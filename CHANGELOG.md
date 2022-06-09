@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/makepress/clytia/compare/v0.1.1...v0.2.0) (2022-06-09)
+
+
+### Features
+
+* Add validated_input function ([e8a9a2b](https://www.github.com/makepress/clytia/commit/e8a9a2bd7a82f8379110374adfde5e533d866c4c))
+* Added examples ([5d6af36](https://www.github.com/makepress/clytia/commit/5d6af3626125a3c09928b58a4e0ec66eca42fd6e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency rust to v1.61.0 ([a9e5ede](https://www.github.com/makepress/clytia/commit/a9e5ede8f8b9a7e9f9871d97d6eb6d9a7ed1ad9c))
+* Multichoice could end up with reversed controls ([a414066](https://www.github.com/makepress/clytia/commit/a414066d23e5f9b8f6f9f93845f4b2783a7a28c9))
+* **tests:** Correcting tests for other fixes ([16afc4a](https://www.github.com/makepress/clytia/commit/16afc4ad7e91857d98e720fc4493432b9b282ef9))
+* **tests:** Make the spinner tests more friendly to the CI ([58d1fe4](https://www.github.com/makepress/clytia/commit/58d1fe4ffb3392f035718f46a0813827f2822c3b))
+
 ### [0.1.1](https://www.github.com/makepress/clytia/compare/v0.1.0...v0.1.1) (2022-05-28)
 
 
