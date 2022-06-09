@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "nightly", feature(scoped_threads))]
 
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashSet,
     io::{self, Read, Stdin, Stdout, Write},
     str::FromStr,
     sync::atomic::AtomicBool,
