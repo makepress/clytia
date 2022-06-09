@@ -854,10 +854,10 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}",
+                    "\r{} Wait 100ms\r{} Wait 100ms\r{}\n",
                     SPINNER_SYMBOLS[0].blue(),
                     SPINNER_SYMBOLS[1].blue(),
-                    "✔️ Wait 100ms".green()
+                    "✔️  Wait 100ms".green()
                 )
             );
         }
@@ -879,7 +879,7 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}",
+                    "\r{} Wait 100ms\r{} Wait 100ms\r{}\n",
                     SPINNER_SYMBOLS[0].blue(),
                     SPINNER_SYMBOLS[1].blue(),
                     "❌ Wait 100ms".red()
@@ -907,10 +907,13 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}",
+                    "{}\r{} Wait 100ms{}\r{} Wait 100ms{}\r{}\n",
+                    termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[0].blue(),
+                    termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[1].blue(),
-                    "✔️ Wait 100ms".green()
+                    termion::clear::CurrentLine,
+                    "✔️  Wait 100ms".green()
                 )
             );
         }
@@ -935,9 +938,12 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}",
+                    "{}\r{} Wait 100ms{}\r{} Wait 100ms{}\r{}\n",
+                    termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[0].blue(),
+                    termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[1].blue(),
+                    termion::clear::CurrentLine,
                     "❌ Wait 100ms".red()
                 )
             );
