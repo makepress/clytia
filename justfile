@@ -12,3 +12,7 @@ build:
 # Runs the non interactive tests
 test:
     cargo test tests::non_interactive
+
+# Runs cargo-fmt on the source
+format:
+    cargo fmt

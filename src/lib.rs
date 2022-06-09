@@ -843,8 +843,8 @@ mod tests {
             let input: Vec<u8> = Vec::new();
             let mut cli = Clytia::new(&input as &[u8], output);
             assert!(cli
-                .static_background_spinner::<_, _, (), ()>("Wait 100ms", || {
-                    std::thread::sleep(Duration::from_millis(100));
+                .static_background_spinner::<_, _, (), ()>("Wait 1ms", || {
+                    std::thread::sleep(Duration::from_millis(1));
                     Ok(())
                 })
                 .is_ok());
@@ -854,10 +854,9 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}\n",
+                    "\r{} Wait 1ms\r{}\n",
                     SPINNER_SYMBOLS[0].blue(),
-                    SPINNER_SYMBOLS[1].blue(),
-                    "✔️  Wait 100ms".green()
+                    "✔️  Wait 1ms".green()
                 )
             );
         }
@@ -868,8 +867,8 @@ mod tests {
             let input: Vec<u8> = Vec::new();
             let mut cli = Clytia::new(&input as &[u8], output);
             assert!(cli
-                .static_background_spinner::<_, _, (), ()>("Wait 100ms", || {
-                    std::thread::sleep(Duration::from_millis(100));
+                .static_background_spinner::<_, _, (), ()>("Wait 1ms", || {
+                    std::thread::sleep(Duration::from_millis(1));
                     Err(())
                 })
                 .is_ok());
@@ -879,10 +878,9 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "\r{} Wait 100ms\r{} Wait 100ms\r{}\n",
+                    "\r{} Wait 1ms\r{}\n",
                     SPINNER_SYMBOLS[0].blue(),
-                    SPINNER_SYMBOLS[1].blue(),
-                    "❌ Wait 100ms".red()
+                    "❌ Wait 1ms".red()
                 )
             );
         }
@@ -894,9 +892,9 @@ mod tests {
             let mut cli = Clytia::new(&input as &[u8], output);
             assert!(cli
                 .dynamic_background_spinner::<_, _, _, (), ()>(
-                    || "Wait 100ms",
+                    || "Wait 1ms",
                     || {
-                        std::thread::sleep(Duration::from_millis(100));
+                        std::thread::sleep(Duration::from_millis(1));
                         Ok(())
                     }
                 )
@@ -907,13 +905,11 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "{}\r{} Wait 100ms{}\r{} Wait 100ms{}\r{}\n",
+                    "{}\r{} Wait 1ms{}\r{}\n",
                     termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[0].blue(),
                     termion::clear::CurrentLine,
-                    SPINNER_SYMBOLS[1].blue(),
-                    termion::clear::CurrentLine,
-                    "✔️  Wait 100ms".green()
+                    "✔️  Wait 1ms".green()
                 )
             );
         }
@@ -925,9 +921,9 @@ mod tests {
             let mut cli = Clytia::new(&input as &[u8], output);
             assert!(cli
                 .dynamic_background_spinner::<_, _, _, (), ()>(
-                    || "Wait 100ms",
+                    || "Wait 1ms",
                     || {
-                        std::thread::sleep(Duration::from_millis(100));
+                        std::thread::sleep(Duration::from_millis(1));
                         Err(())
                     }
                 )
@@ -938,13 +934,11 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "{}\r{} Wait 100ms{}\r{} Wait 100ms{}\r{}\n",
+                    "{}\r{} Wait 1ms{}\r{}\n",
                     termion::clear::CurrentLine,
                     SPINNER_SYMBOLS[0].blue(),
                     termion::clear::CurrentLine,
-                    SPINNER_SYMBOLS[1].blue(),
-                    termion::clear::CurrentLine,
-                    "❌ Wait 100ms".red()
+                    "❌ Wait 1ms".red()
                 )
             );
         }
