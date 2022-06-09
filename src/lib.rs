@@ -202,39 +202,50 @@ impl<I: Read, O: Write> Clytia<I, O> {
         loop {
             write!(
                 output_stream,
-                "{}{}{}",
+                "{}\r{} {} {} ",
+                termion::clear::CurrentLine,
                 prompt.blue(),
                 format!("(requirements: {})", requirements).magenta(),
-                " => ".blue()
+                "=>".blue()
             )?;
             output_stream.flush()?;
 
             let input = input_stream.read_line()?;
-            match input {
+            let r = match input {
                 None => {
-                    write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
                     write!(
                         output_stream,
-                        "{}{}{}",
+                        "{}{}\r",
+                        termion::cursor::Up(1),
+                        termion::clear::CurrentLine,
+                    )?;
+                    write!(
+                        output_stream,
+                        "{} {} {} ",
                         prompt.red(),
                         format!("(requirements: {})", requirements).magenta(),
-                        " => ".red()
+                        "=>".red()
                     )?;
                     output_stream.flush()?;
-                    std::thread::sleep(Duration::from_millis(100));
+                    std::thread::sleep(Duration::from_millis(500));
                     continue;
                 }
                 Some(n) if n.trim().trim_end().is_empty() => {
-                    write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
                     write!(
                         output_stream,
-                        "{}{}{}",
+                        "{}{}\r",
+                        termion::cursor::Up(1),
+                        termion::clear::CurrentLine,
+                    )?;
+                    write!(
+                        output_stream,
+                        "{} {} {} ",
                         prompt.red(),
                         format!("(requirements: {})", requirements).magenta(),
-                        " => ".red()
+                        "=>".red()
                     )?;
                     output_stream.flush()?;
-                    std::thread::sleep(Duration::from_millis(100));
+                    std::thread::sleep(Duration::from_millis(500));
                     continue;
                 }
                 Some(n) => {
@@ -245,21 +256,22 @@ impl<I: Read, O: Write> Clytia<I, O> {
                     if validate(&parsed) {
                         Ok::<_, Error>(parsed)
                     } else {
-                        write!(output_stream, "{}\r", termion::clear::CurrentLine)?;
+                        write!(output_stream, "\r{}", termion::cursor::Up(1),)?;
                         write!(
                             output_stream,
-                            "{}{}{}{}",
+                            "{} {} {} {}",
                             prompt.red(),
                             format!("(requirements: {})", requirements).magenta(),
-                            " => ".red(),
+                            "=>".red(),
                             n.white()
                         )?;
                         output_stream.flush()?;
-                        std::thread::sleep(Duration::from_millis(100));
+                        std::thread::sleep(Duration::from_millis(500));
                         continue;
                     }
                 }
             }?;
+            return Ok(r);
         }
     }
 
@@ -324,10 +336,10 @@ impl<I: Read, O: Write> Clytia<I, O> {
 
         match &ret {
             Ok(_) => {
-                write!(output_stream, "\r{}", format!("✔️ {}", text).green())
+                writeln!(output_stream, "\r{}", format!("✔️  {}", text).green())
             }
             Err(_) => {
-                write!(output_stream, "\r{}", format!("❌ {}", text).red())
+                writeln!(output_stream, "\r{}", format!("❌ {}", text).red())
             }
         }?;
         output_stream.flush()?;
@@ -387,7 +399,8 @@ impl<I: Read, O: Write> Clytia<I, O> {
                 while !should_stop.load(std::sync::atomic::Ordering::SeqCst) {
                     write!(
                         output_stream,
-                        "\r{} {}",
+                        "{}\r{} {}",
+                        termion::clear::CurrentLine,
                         SPINNER_SYMBOLS[index].blue(),
                         text_func()
                     )?;
@@ -408,10 +421,20 @@ impl<I: Read, O: Write> Clytia<I, O> {
 
         match &ret {
             Ok(_) => {
-                write!(output_stream, "\r{}", format!("✔️ {}", text_func()).green())
+                writeln!(
+                    output_stream,
+                    "{}\r{}",
+                    termion::clear::CurrentLine,
+                    format!("✔️  {}", text_func()).green()
+                )
             }
             Err(_) => {
-                write!(output_stream, "\r{}", format!("❌ {}", text_func()).red())
+                writeln!(
+                    output_stream,
+                    "{}\r{}",
+                    termion::clear::CurrentLine,
+                    format!("❌ {}", text_func()).red()
+                )
             }
         }?;
         output_stream.flush()?;
@@ -524,12 +547,12 @@ impl<I: Read, O: Write> Clytia<I, O> {
             Ok(_) => {
                 writeln!(
                     output_stream,
-                    "{}{}\r{}{}✔️ {}",
+                    "{}{}\r{}{}✔️  {}",
                     termion::clear::CurrentLine,
                     termion::cursor::Up(1),
                     termion::clear::CurrentLine,
                     termion::cursor::Hide,
-                    prompt
+                    prompt.green()
                 )?;
             }
             Err(_) => {
@@ -545,7 +568,7 @@ impl<I: Read, O: Write> Clytia<I, O> {
                     termion::cursor::Up(1),
                     termion::clear::CurrentLine,
                     termion::cursor::Hide,
-                    prompt
+                    prompt.red()
                 )?;
 
                 let cols: usize = termion::terminal_size()?.0.into();
@@ -651,7 +674,7 @@ impl<I: Read, O: Write> Clytia<I, O> {
         writeln!(
             output_stream,
             "{}",
-            format!("\r => {}\r", options.as_ref()[selected]).green()
+            format!("\r=> {}\r", options.as_ref()[selected]).green()
         )?;
 
         Ok(options.as_ref()[selected].clone())
@@ -683,21 +706,17 @@ impl<I: Read, O: Write> Clytia<I, O> {
         let mut highlighted: usize = 0;
         let options_count = options.as_ref().len();
         let mut selected = HashSet::new();
-        let mut options_map = HashMap::new();
-        for (index, option) in options.as_ref().iter().enumerate() {
-            options_map.insert(index, option);
-        }
 
         write!(output_stream, "{}", termion::cursor::Hide)?;
 
-        for (index, option) in &options_map {
-            if selected.contains(index) {
-                if highlighted == *index {
+        for (index, option) in options.as_ref().iter().enumerate() {
+            if selected.contains(&index) {
+                if highlighted == index {
                     writeln!(output_stream, "\r{}", format!("[X] {}", option).blue())?;
                 } else {
                     writeln!(output_stream, "\r[X] {}", option)?;
                 }
-            } else if highlighted == *index {
+            } else if highlighted == index {
                 writeln!(output_stream, "\r{}", format!("[ ] {}", option).blue())?;
             } else {
                 writeln!(output_stream, "\r[ ] {}", option)?;
@@ -727,14 +746,14 @@ impl<I: Read, O: Write> Clytia<I, O> {
                 )?;
             }
             write!(output_stream, "\r")?;
-            for (index, option) in &options_map {
-                if selected.contains(index) {
-                    if highlighted == *index {
+            for (index, option) in options.as_ref().iter().enumerate() {
+                if selected.contains(&index) {
+                    if highlighted == index {
                         writeln!(output_stream, "\r{}", format!("[X] {}", option).blue())?;
                     } else {
                         writeln!(output_stream, "\r[X] {}", option)?;
                     }
-                } else if highlighted == *index {
+                } else if highlighted == index {
                     writeln!(output_stream, "\r{}", format!("[ ] {}", option).blue())?;
                 } else {
                     writeln!(output_stream, "\r[ ] {}", option)?;
@@ -752,11 +771,16 @@ impl<I: Read, O: Write> Clytia<I, O> {
         }
         write!(output_stream, "\r")?;
 
-        let mut returns = Vec::new();
-        for index in &selected {
-            let item = options_map.get(index).unwrap();
-            writeln!(output_stream, "\r{}", format!("[X] {}", item).green())?;
-            returns.push((*item).clone());
+        let returns = options
+            .as_ref()
+            .iter()
+            .enumerate()
+            .filter(|(index, _)| selected.contains(index))
+            .map(|(_, option)| option.clone())
+            .collect();
+
+        for option in &returns {
+            writeln!(output_stream, "{}", format!("\r[X] {}\r", option).green())?;
         }
 
         Ok(returns)
