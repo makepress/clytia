@@ -134,21 +134,11 @@ impl<I: Read, O: Write> Clytia<I, O> {
     {
         let input_stream = &mut self.input;
         let output_stream = &mut self.output;
-
-        match &default {
-            Some(d) => {
-                write!(
-                    output_stream,
-                    "{}{}{}",
-                    prompt.blue(),
-                    format!("(default: {})", d).magenta(),
-                    " => ".blue()
-                )?;
-            }
-            None => {
-                write!(output_stream, "{}", format!("{} => ", prompt).blue())?;
-            }
-        };
+        write!(output_stream, "{} ", prompt.blue())?;
+        if let Some(d) = &default {
+            write!(output_stream, "{} ", format!("(default: {})", d).magenta())?;
+        }
+        write!(output_stream, "{} ", "=>".blue())?;
         output_stream.flush()?;
 
         let input = input_stream.read_line()?;
@@ -817,12 +807,12 @@ mod tests {
             assert_eq!(
                 s,
                 format!(
-                    "{}{}{}",
+                    "{} {} {} ",
                     "input a number".blue(),
                     "(default: 0)".magenta(),
-                    " => ".blue()
+                    "=>".blue()
                 )
-            )
+            );
         }
 
         #[test]
@@ -834,7 +824,7 @@ mod tests {
             let s = std::str::from_utf8(cli.output());
             assert!(s.is_ok());
             let s = s.unwrap();
-            assert_eq!(s, "input a number => ".blue().to_string())
+            assert_eq!(s, format!("{} {} ", "input a number".blue(), "=>".blue()));
         }
 
         #[test]
