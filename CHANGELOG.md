@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/makepress/clytia/compare/v0.2.0...v0.2.1) (2022-06-10)
+
+
+### Bug Fixes
+
+* correct parsed_input spacing ([b3f7850](https://www.github.com/makepress/clytia/commit/b3f78506b9f97a79fa9543e3038a4daf9cd05ebb))
+
 ## [0.2.0](https://www.github.com/makepress/clytia/compare/v0.1.1...v0.2.0) (2022-06-09)
 
 
