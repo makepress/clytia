@@ -46,4 +46,4 @@ jobs:
             - run: cargo login
             - run: cargo publish
 orbs:
-  makepress-orb: makepress/makepress-orb@2.4.0
+  makepress-orb: makepress/makepress-orb@2.4.1
