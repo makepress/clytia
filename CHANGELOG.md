@@ -1,5 +1,16 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/makepress/clytia/compare/v0.2.1...v0.2.2) (2022-07-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rust to v1.62.0 ([4859ff2](https://www.github.com/makepress/clytia/commit/4859ff281b9cff605703f70dcdfe79fa6e6eeef6))
+* **deps:** update dependency rust to v1.62.1 ([90d0b5a](https://www.github.com/makepress/clytia/commit/90d0b5ad7db99b025f2c169ad20b4fee55a90b98))
+* **deps:** update makepress-orb orb to v2.4.0 ([b8ab03b](https://www.github.com/makepress/clytia/commit/b8ab03bf0f56c3d11b19d976eb6a3287992424be))
+* **deps:** update makepress-orb orb to v2.4.1 ([89c8090](https://www.github.com/makepress/clytia/commit/89c8090cde42bc25b1e713ee889844e3f6ae3598))
+* **deps:** update rust crate crossbeam to 0.8.2 ([a80ea13](https://www.github.com/makepress/clytia/commit/a80ea13196fb9e0459749436cbcb93dcbfd53230))
+
 ### [0.2.1](https://www.github.com/makepress/clytia/compare/v0.2.0...v0.2.1) (2022-06-10)
 
 
