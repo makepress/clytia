@@ -1,5 +1,30 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/makepress/clytia/compare/v0.2.1...v0.2.2) (2022-12-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rust to v1.62.0 ([4859ff2](https://www.github.com/makepress/clytia/commit/4859ff281b9cff605703f70dcdfe79fa6e6eeef6))
+* **deps:** update dependency rust to v1.62.1 ([90d0b5a](https://www.github.com/makepress/clytia/commit/90d0b5ad7db99b025f2c169ad20b4fee55a90b98))
+* **deps:** update dependency rust to v1.63.0 ([decfa96](https://www.github.com/makepress/clytia/commit/decfa963f3c4c80dfb314e120a448d5a944c55d1))
+* **deps:** update dependency rust to v1.64.0 ([501c4ec](https://www.github.com/makepress/clytia/commit/501c4ec3ce70c9cc30c92ed16df965ed8924a563))
+* **deps:** update dependency rust to v1.65.0 ([f8f5944](https://www.github.com/makepress/clytia/commit/f8f594483ec2af2fffea83effc6b8d3b49135fb3))
+* **deps:** update dependency rust to v1.66.0 ([d5dae5e](https://www.github.com/makepress/clytia/commit/d5dae5e49edadec26c836b7ab0df92ee81af9f04))
+* **deps:** update makepress-orb orb to v2.4.0 ([b8ab03b](https://www.github.com/makepress/clytia/commit/b8ab03bf0f56c3d11b19d976eb6a3287992424be))
+* **deps:** update makepress-orb orb to v2.4.1 ([89c8090](https://www.github.com/makepress/clytia/commit/89c8090cde42bc25b1e713ee889844e3f6ae3598))
+* **deps:** update rust crate crossbeam to 0.8.2 ([a80ea13](https://www.github.com/makepress/clytia/commit/a80ea13196fb9e0459749436cbcb93dcbfd53230))
+* **deps:** update rust crate owo-colors to 3.5.0 ([a34d8c1](https://www.github.com/makepress/clytia/commit/a34d8c1f7176b20c058d36382c182cb3fecfade5))
+* **deps:** update rust crate owo-colors to 3.6.0 ([ced9d09](https://www.github.com/makepress/clytia/commit/ced9d0967c6697ede7ebacf79be9c95d17784bbb))
+* **deps:** update rust crate termion to v2 ([c919c10](https://www.github.com/makepress/clytia/commit/c919c101a50a48441655770e156d1c979350e4f7))
+* **deps:** update rust crate thiserror to 1.0.32 ([0376d63](https://www.github.com/makepress/clytia/commit/0376d63b4d003097aa883ea3f81e0db85022dfee))
+* **deps:** update rust crate thiserror to 1.0.33 ([ed83568](https://www.github.com/makepress/clytia/commit/ed83568a28f49e93c0b88596668a7af57490f8ba))
+* **deps:** update rust crate thiserror to 1.0.34 ([fb04a4a](https://www.github.com/makepress/clytia/commit/fb04a4a65cc48183160cdc72dac194f065325aae))
+* **deps:** update rust crate thiserror to 1.0.35 ([353df46](https://www.github.com/makepress/clytia/commit/353df46f9a175940ff8f31b60babcbe12827af4a))
+* **deps:** update rust crate thiserror to 1.0.36 ([fbe734c](https://www.github.com/makepress/clytia/commit/fbe734c2cc74a8045fbfe41f523f4653673003b6))
+* **deps:** update rust crate thiserror to 1.0.37 ([4920272](https://www.github.com/makepress/clytia/commit/49202722323f8619b74bb8e3f2a37e6811c0f800))
+* **deps:** update rust crate thiserror to 1.0.38 ([142b4ca](https://www.github.com/makepress/clytia/commit/142b4ca7018be960da710d8f3e8cb31d4d01ae82))
+
 ### [0.2.1](https://www.github.com/makepress/clytia/compare/v0.2.0...v0.2.1) (2022-06-10)
 
 
