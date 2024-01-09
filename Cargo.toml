@@ -15,7 +15,7 @@ categories = ["command-line-interface"]
 
 
 [dependencies]
-crossbeam = "0.8.2"
+crossbeam = "0.8.4"
 owo-colors = "3.6.0"
 termion = "2.0.1"
 thiserror = "1.0.38"
